@@ -1,11 +1,13 @@
-import { Text, View } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { StyleSheet } from "react-native";
 
 export const TaskItem = (props) => {
     return (
-        <View style={styles.taskItem}>
-            <Text style={styles.taskText}>{props.text}</Text>
-        </View>
+            <View style={styles.taskItem}>
+                <Pressable onPress={props.onDelete.bind(this, props.id)}>
+                    <Text style={styles.taskText}>{props.text}</Text>
+                </Pressable>
+            </View>
     );
 };
 

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { FlatList, StyleSheet, View, Button } from 'react-native';
+import { FlatList, StyleSheet, View, Button} from 'react-native';
 import { TaskInput } from './components/TaskInput';
 import { TaskItem } from './components/TaskItem';
 
@@ -20,7 +20,13 @@ export default function App() {
   };
 
   const addTaskHendler = (enteredTaskText) => {
-    setTasks((currentTask) => [...currentTask, {text: enteredTaskText, key: Math.random().toString()}]);
+    setTasks((currentTasks) => [...currentTasks, {text: enteredTaskText, id: Math.random().toString()}]);
+  };
+
+  function deleteTaskHendler(id) {
+    setTasks(currentTasks => {
+      return currentTasks.filter((task) => task.id !== id);
+    });
   };
 
   console.log(tasks);
@@ -31,7 +37,7 @@ export default function App() {
       <View style={styles.appContainer}>
         <Button 
           title='Add new Task' 
-          color='#5e0acc'
+          color='#a13de3'
           onPress={startAddTaskHendler}
         />
         {modalIsVisible && <TaskInput 
@@ -42,7 +48,7 @@ export default function App() {
         <View style={styles.tasksContainer}>
           <FlatList
             data={tasks}
-            renderItem={(itemData) =>(<TaskItem text={itemData.item.text}/>)}
+            renderItem={(itemData) =>(<TaskItem text={itemData.item.text} id={itemData.item.id} onDelete = { deleteTaskHendler }/>)}
           />
         </View>
       </View>
