@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
-import { View, TextInput, Button } from "react-native";
+import { View, TextInput, Button, Modal, Image } from "react-native";
 import { useState } from "react";
 
-export const TaskInput = ({onAddTask}) => {
+export const TaskInput = (props) => {
 
     const [enteredTaskText, setEnteredTaskText] = useState('');
 
@@ -13,23 +13,37 @@ export const TaskInput = ({onAddTask}) => {
     console.log(enteredTaskText);
 
     const addTaskHandler = () => {
-        onAddTask(enteredTaskText);
+        props.onAddTask(enteredTaskText);
         setEnteredTaskText('');
+        props.onCancel();
     };
 
     return (
-        <View style={styles.inputContainer}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="What do you need to do?"
-                onChangeText={taskInputHendler}
-                value={enteredTaskText}
-            />
-            <Button 
-                title="Add task"
-                onPress={addTaskHandler}
-            />
-        </View>
+        <Modal visible={props.visible} animationType="slide">
+            <View style={styles.inputContainer}>
+                <Image style={styles.image} source={require('../assets/img/epep.png')}/>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="What do you need to do?"
+                    onChangeText={taskInputHendler}
+                    value={enteredTaskText}
+                />
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button 
+                            title="Add task"
+                            onPress={addTaskHandler}
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <Button 
+                            title="Cancel"
+                            onPress={props.onCancel}
+                        />
+                    </View>
+                </View>
+            </View>
+        </Modal> 
     )
 };
 
@@ -37,19 +51,28 @@ const styles = StyleSheet.create({
 
     inputContainer: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        borderBottomWidth: 2,
-        borderBottomColor: 'gray',
-        paddingBottom: 10
+        padding: 20,
     },
 
     textInput: {
-        width: '70%',
-        marginRight: 10,
+        width: '100%',
         borderWidth: 1,
         borderColor: 'gray',
         padding: 4,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        paddingTop: 10
+    },
+    button: {
+        width: 100,
+        marginHorizontal: 8
+    },
+    image: {
+        width:100,
+        height: 100,
+        margin: 20
     }
 });
